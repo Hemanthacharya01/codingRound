@@ -1,51 +1,40 @@
 package testcases;
-import com.sun.javafx.PlatformUtil;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import base.TestBase;
+
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class SignInTest {
+import pages.SignInPage;
 
-    WebDriver driver = new ChromeDriver();
+public class SignInTest extends TestBase{
 
+	@BeforeMethod
+	public void setup(){
+		init();
+	}
+	
     @Test
     public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
-
-        setDriverPath();
+    	SignInPage signIn = new SignInPage();
 
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
 
-        driver.findElement(By.linkText("Your trips")).click();
-        driver.findElement(By.id("SignIn")).click();
+        signIn.getLinkYourTrips().click();
+        signIn.getLinkSignIn().click();
 
-        driver.findElement(By.id("signInButton")).click();
+        signIn.getButtonSignIn().click();
 
-        String errors1 = driver.findElement(By.id("errors1")).getText();
+        String errors1 = signIn.getLabelErrorMessageForBlankFields().getText();
         Assert.assertTrue(errors1.contains("There were errors in your submission"));
+    }
+
+    @AfterMethod
+	public void tearDown(){
+    	//close the browser
         driver.quit();
-    }
-
-    private void waitFor(int durationInMilliSeconds) {
-        try {
-            Thread.sleep(durationInMilliSeconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    private void setDriverPath() {
-        if (PlatformUtil.isMac()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver");
-        }
-        if (PlatformUtil.isWindows()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-        }
-        if (PlatformUtil.isLinux()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
-        }
     }
 
 

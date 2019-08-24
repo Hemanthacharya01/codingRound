@@ -1,0 +1,8 @@
+Steps followed to refactor the code
+1. Converted the given project to Maven Project
+2. Followed Page object model
+3. Created "TestBase" class under "base" package which contains code for driver initialization, wait and isElementPresent method
+4. Created respective page classes under "page" package for every test class
+5. Each page class contains the locator for every element and their getter methods. Also each page has its own constructor for PageFactory initialization
+6. Each Test class has @BeforeMethod and @AfterMethod methods which are calling driver creation method and killing method respectively
+7. Each variable has been given a meaningful name and have used camel casing for their naming convention.
